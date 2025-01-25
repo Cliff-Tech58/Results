@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participant GWK Points and Debts</title>
+  <style>
+    /* General Styling */
+    body {
+      font-family: "Comic Sans MS", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7f9fb;
+    }
+    h1 {
+      text-align: center;
+      color: #444;
+      font-weight: bold;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"], input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-family: "Comic Sans MS", sans-serif;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .result {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 6px solid #3498db;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+    .tick {
+      display: none;
+      font-size: 24px;
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loading-message {
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+      color: #555;
+    }
+    .message {
+      font-weight: bold;
+      color: #e74c3c;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Enter Your Unique ID</h1>
+
+  <form id="participantForm">
+    <label for="uniqueId">Unique ID:</label>
+    <input type="text" id="uniqueId" name="uniqueId" placeholder="Enter your unique ID" required>
+    <input type="submit" value="Check GWK Points and Debts">
+  </form>
+
+  <div class="loader" id="loader"></div>
+  <p class="loading-message" id="loadingMessage" style="display: none;">Please wait as we fetch your data...</p>
+
+  <div class="result" id="resultDiv">
+    <h2>GWK Points and Debts</h2>
+    <p id="points"></p>
+    <p id="debts"></p>
+    <div class="tick" id="tick">&#10004;</div>
+  </div>
+
+  <div class="message" id="messageDiv"></div>
+
+  <script>
+    // Mock data for participants
+    const participants = {
+      "101": { points: 75, debts: "No debts" },
+      "102": { points: 60, debts: "50 sh" },
+      "103": { points: 85, debts: "No debts" }
+    };
+
+    const form = document.getElementById('participantForm');
+    const resultDiv = document.getElementById('resultDiv');
+    const pointsDisplay = document.getElementById('points');
+    const debtsDisplay = document.getElementById('debts');
+    const loader = document.getElementById('loader');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const tick = document.getElementById('tick');
+    const messageDiv = document.getElementById('messageDiv');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const uniqueId = document.getElementById('uniqueId').value;
+      resultDiv.style.display = 'none';
+      messageDiv.innerText = '';
+      loader.style.display = 'block';
+      loadingMessage.style.display = 'block';
+      tick.style.display = 'none';
+
+      // Simulating a loading delay with setTimeout (can be replaced with real async data fetching)
+      setTimeout(() => {
+        loader.style.display = 'none';
+        loadingMessage.style.display = 'none';
+
+        // Check if the ID exists in the participants' data
+        if (participants[uniqueId]) {
+          const participantData = participants[uniqueId];
+          pointsDisplay.innerText = `GWK Points: ${participantData.points}`;
+          debtsDisplay.innerText = `Debts: ${participantData.debts}`;
+          resultDiv.style.display = 'block';
+          tick.style.display = 'block';  // Show the tick after loading
+        } else {
+          messageDiv.innerText = "Mscoff doesn't recognise you!";
+        }
+      }, 2000); // 2 seconds delay to simulate loading
+    });
+  </script>
+
+</body>
+</html>
